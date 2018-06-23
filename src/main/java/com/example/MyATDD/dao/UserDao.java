@@ -3,14 +3,14 @@ package com.example.MyATDD.dao;
 import com.example.MyATDD.domain.ConnectionMaker;
 import com.example.MyATDD.domain.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
-    private ConnectionMaker connectionMaker;
+    private DataSource dataSource;
 
     public void add(User user) throws Exception {
-        Connection c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
         PreparedStatement ps = c.prepareStatement(
                 "insert into users (id, name, passwrod) VALUES (?, ?, ?)");
         ps.setString(1, user.getId());
@@ -19,7 +19,7 @@ public class UserDao {
     }
 
     public User get(String id) throws Exception {
-        Connection c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
         PreparedStatement ps = c.prepareStatement("select * from users whre id = ?");
         ps.setString(1, id);
         ResultSet rs = ps.executeQuery();
@@ -36,7 +36,7 @@ public class UserDao {
         return user;
     }
 
-    public void setConnectionMaker(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }
