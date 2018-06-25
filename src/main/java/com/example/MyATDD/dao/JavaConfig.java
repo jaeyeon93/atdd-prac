@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-public class CountingDaoFactory {
+public class JavaConfig {
 
     @Bean // 오브젝트 생성을 담당하는 IoC용 메소드라는 표시
     public UserDao userDao() {
