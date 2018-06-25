@@ -15,10 +15,11 @@ public class UserDao {
     public void add(User user) throws Exception {
         Connection c = dataSource.getConnection();
         PreparedStatement ps = c.prepareStatement(
-                "insert into users (id, name, passwrod) VALUES (?, ?, ?)");
+                "insert into users (id, name, password) VALUES (?, ?, ?)");
         ps.setString(1, user.getId());
         ps.setString(2, user.getName());
         ps.setString(3, user.getPassword());
+        ps.execute();
         logger.info("User added : {}", user.toString());
     }
 
@@ -39,6 +40,31 @@ public class UserDao {
         c.close();
 
         return user;
+    }
+
+    public void deleteAll() throws Exception {
+        Connection c = dataSource.getConnection();
+
+        PreparedStatement ps = c.prepareStatement("delete from users");
+        ps.executeUpdate();
+
+        ps.close();
+        c.close();
+    }
+
+    public int getCount() throws Exception {
+        Connection c = dataSource.getConnection();
+        PreparedStatement ps = c.prepareStatement("select count(*) from users");
+
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+
+        rs.close();
+        ps.close();
+        c.close();
+
+        return count;
     }
 
     public void setDataSource(DataSource dataSource) {
